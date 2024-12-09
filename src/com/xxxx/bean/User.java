@@ -1,4 +1,4 @@
-package com.xxxx.entity;
+package com.xxxx.bean;
 
 public class User {
     private Integer userId; //用户编号
