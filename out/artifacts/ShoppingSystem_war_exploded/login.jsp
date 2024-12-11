@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,7 +95,7 @@
             cursor: pointer;
         }
 
-        .registerReal{
+        .registerReal {
             font-size: 16px;
             text-align: center;
             margin-top: 20px;
@@ -125,27 +124,130 @@
                 background-position: 100% 50%;
             }
         }
+
+        /* 弹窗遮罩层 */
+        .modal-overlay {
+            display: none;  /* 初始不显示 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);  /* 半透明背景 */
+            z-index: 999;  /* 遮罩层置于内容上方 */
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;  /* 初始不显示 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.2);  /* 边缘 */
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+            z-index: 1000;  /* 弹窗置于遮罩层上方 */
+            max-width: 250px; /* 弹窗最大宽度 */
+            width: 60%; /* 宽度为80% */
+        }
+
+        .modal .message {
+            color: #111;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .modal .close {
+            background: transparent;
+            color: #333;
+            font-size: 28px;
+            border: none;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .modal .close:hover {
+            color: red;
+        }
     </style>
 </head>
 <body>
 
 <div class="login-container">
     <div class="login-title">Login</div>
-    <form>
+    <form action="/login" method="post" id="loginform">
         <div class="input-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username">
         </div>
         <div class="input-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password">
         </div>
-        <button type="submit">Login In</button>
+        <button type="submit" id="loginbtn">Login In</button>
         <div class="register">
             Don't have an account? <a href="register.jsp" class="registerReal">Click here</a>
         </div>
     </form>
 </div>
 
+<!-- 弹窗遮罩层 -->
+<div id="modalOverlay" class="modal-overlay"></div>
+
+<!-- 弹窗 -->
+<div id="errorModal" class="modal">
+    <div class="message" id="errorMessage"></div>
+    <button class="close" onclick="closeModal()">&times;</button>  <!-- HTML 实体符号 -->
+</div>
+
 </body>
+<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    // 显示弹窗
+    function showModal(message) {
+        $("#errorMessage").text(message);
+        $("#errorModal").show();  // 显示弹窗
+        $("#modalOverlay").show();  // 显示遮罩层
+    }
+
+    // 关闭弹窗
+    function closeModal() {
+        $("#errorModal").hide();  // 隐藏弹窗
+        $("#modalOverlay").hide();  // 隐藏遮罩层
+    }
+
+    $("#loginbtn").click(function (event) {
+        // 阻止表单提交
+        event.preventDefault();  // 阻止表单的默认提交行为
+        var uname = $("#username").val();
+        var upwd = $("#password").val();
+
+        // 判断用户名是否为空
+        if (isEmpty(uname)) {
+            showModal("Username is required.");
+            return;  // 结束函数，避免继续执行提交
+        }
+
+        // 判断密码是否为空
+        if (isEmpty(upwd)) {
+            showModal("Password is required.");
+            return;  // 结束函数，避免继续执行提交
+        }
+
+        $("#loginform").submit();
+    });
+
+    // 判断字符串是否为空，空则返回 true，否则返回 false
+    function isEmpty(str) {
+        if (str == null || str.trim() == "") {
+            return true;
+        }
+        return false;
+    }
+</script>
 </html>

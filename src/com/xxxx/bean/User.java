@@ -1,19 +1,19 @@
 package com.xxxx.bean;
 
 public class User {
-    private Integer userId; //用户编号
-    private String userName; //用户名
-    private String userPwd; //用户密码
+    private Integer userid; //用户编号
+    private String username; //用户名
+    private String password; //用户密码
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public String getUserPwd() {
-        return userPwd;
+    public String getPassword() {
+        return password;
     }
 }
